@@ -1,3 +1,0 @@
-[submodule "charts/dp-conceptual-search-api"]
-	path = charts/dp-conceptual-search-api
-	url = https://gitlab.com/flaxandteal/onyx/dp-conceptual-search-helm-poc

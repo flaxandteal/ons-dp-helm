@@ -1,0 +1,76 @@
+{{- if .Values.elasticsearch.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-elasticsearch
+  labels:
+    component: elasticsearch
+    {{- include "dp-conceptual-alpha.labels" . | nindent 4 }}
+spec:
+{{- with .Values.elasticsearch }}
+  {{- if not .autoscaling.enabled }}
+  replicas: {{ .replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "dp-conceptual-alpha.selectorLabels" $ | nindent 6 }}
+      component: elasticsearch
+  serviceName: "{{ $.Release.Name }}-elasticsearch"
+  replicas: 1 # by default is 1
+  template:
+    metadata:
+      {{- with .podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        component: elasticsearch
+        {{- include "dp-conceptual-alpha.selectorLabels" $ | nindent 8 }}
+    spec:
+      {{- with .imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dp-conceptual-alpha.serviceAccountName" $ }}
+      securityContext:
+        {{- toYaml .podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ $.Chart.Name }}-elasticsearch
+          securityContext:
+            {{- toYaml .securityContext | nindent 12 }}
+          image: "{{ .image.repository }}:{{ .image.tag }}"
+          imagePullPolicy: {{ .image.pullPolicy }}
+          ports:
+            - name: es1
+              containerPort: 9200
+              protocol: TCP
+            - name: es2
+              containerPort: 9300
+              protocol: TCP
+          resources:
+            {{- toYaml .resources | nindent 12 }}
+          volumeMounts:
+          - name: es-data
+            mountPath: /usr/share/elasticsearch/data
+      {{- with .nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  volumeClaimTemplates:
+  - metadata:
+      name: es-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi
+{{- end }}
+{{- end }}
