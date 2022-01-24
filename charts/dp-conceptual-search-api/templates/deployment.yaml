@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "dp-conceptual-alpha.fullname" . }}
+  name: {{ include "dp-conceptual-search-api.fullname" . }}
   labels:
     component: api
-    {{- include "dp-conceptual-alpha.labels" . | nindent 4 }}
+    {{- include "dp-conceptual-search-api.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "dp-conceptual-alpha.selectorLabels" . | nindent 6 }}
+      {{- include "dp-conceptual-search-api.selectorLabels" . | nindent 6 }}
       component: api
   template:
     metadata:
@@ -21,13 +21,13 @@ spec:
       {{- end }}
       labels:
         component: api
-        {{- include "dp-conceptual-alpha.selectorLabels" . | nindent 8 }}
+        {{- include "dp-conceptual-search-api.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "dp-conceptual-alpha.serviceAccountName" . }}
+      serviceAccountName: {{ include "dp-conceptual-search-api.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
