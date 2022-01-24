@@ -1,5 +1,5 @@
 apiVersion: v2
-name: dp-conceptual-alpha
+name: dp-conceptual-search-api
 description: A Helm chart for Kubernetes
 
 type: application
