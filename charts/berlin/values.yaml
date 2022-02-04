@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: /to/be/determined/berlin
+  repository: registry.gitlab.com/flaxandteal/onyx/berlin-rs
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
