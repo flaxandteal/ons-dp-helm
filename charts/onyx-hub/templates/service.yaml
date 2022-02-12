@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "contextual-api.fullname" . }}
+  name: {{ include "onyx-hub.fullname" . }}
   labels:
-    {{- include "contextual-api.labels" . | nindent 4 }}
+    {{- include "onyx-hub.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "contextual-api.selectorLabels" . | nindent 4 }}
+    {{- include "onyx-hub.selectorLabels" . | nindent 4 }}

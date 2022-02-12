@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "contextual-api.name" -}}
+{{- define "onyx-hub.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "contextual-api.fullname" -}}
+{{- define "onyx-hub.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "contextual-api.chart" -}}
+{{- define "onyx-hub.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "contextual-api.labels" -}}
-helm.sh/chart: {{ include "contextual-api.chart" . }}
-{{ include "contextual-api.selectorLabels" . }}
+{{- define "onyx-hub.labels" -}}
+helm.sh/chart: {{ include "onyx-hub.chart" . }}
+{{ include "onyx-hub.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "contextual-api.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "contextual-api.name" . }}
+{{- define "onyx-hub.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "onyx-hub.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "contextual-api.serviceAccountName" -}}
+{{- define "onyx-hub.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "contextual-api.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "onyx-hub.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
